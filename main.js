@@ -43,10 +43,7 @@ const data = {
 	]
 }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> c13f303 (add)
 // Функция для создания и скачивания PDF
 function createAndDownloadPDF(data) {
 	return new Promise((resolve, reject) => {
