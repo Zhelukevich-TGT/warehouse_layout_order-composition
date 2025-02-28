@@ -11,14 +11,14 @@ const data = {
 		size: '3XXL',
 		color: 'Черный',
 		toSelect: '4',
-		notes: 'Lorem ipsum dolor sit amet, consectetur'
+		notes: ''
 	},
 	{
-		cell: '1-2-0',
+		cell: '1-2-0, 1-2-0, 1-2-0, 1-2-0, 1-2-0',
 		article: 'FN46840384-65410',
 		productName: 'Джинсы',
 		size: '3XXL',
-		color: 'Черный',
+		color: 'Черный-Белый',
 		toSelect: '4',
 		notes: ''
 	},
@@ -32,7 +32,7 @@ const data = {
 		notes: ''
 	},
 	{
-		cell: '1-2-0,1-2-0,1-2-0',
+		cell: '1-2-0, 1-2-0, 1-2-0',
 		article: 'FN46840384-65410',
 		productName: 'Джинсы',
 		size: '3XXL',
@@ -75,12 +75,24 @@ function createAndDownloadPDF(data) {
 			doc.setFont("Roboto", "bold");
 			doc.setFontSize(16);
 			doc.text(data.title, 10, 20);
-
 			doc.setFont("Roboto", "normal");
+			// 
 			doc.setFontSize(12);
-			doc.text(`Счет: ${data.account}`, 10, 30);
-			doc.text(`МП: ${data.pm}`, 10, 36);
-			doc.text(`Дата готовности: ${data.dateOfReadiness}`, 10, 42);
+			doc.text("Счет: ", 10, 30);
+			doc.setFont("Roboto", "bold");
+			doc.text(`${data.account}`, 10 + doc.getTextWidth("Счет: "), 30);
+			doc.setFont("Roboto", "normal");
+			// 
+			doc.text("Маркетплейс: ", 10, 36);
+			doc.setFont("Roboto", "bold");
+			doc.text(`${data.pm}`, 10 + doc.getTextWidth("Маркетплейс: "), 36);
+			doc.setFont("Roboto", "normal");
+			// 
+			doc.text("Дата готовности: ", 10, 42);
+			doc.setFont("Roboto", "bold");
+			doc.text(`${data.dateOfReadiness}`, 10 + doc.getTextWidth("Дата готовности: "), 42);
+			doc.setFont("Roboto", "normal");
+			// 
 
 			const tableData = data.table.map((item, index) => [
 				index + 1,
@@ -113,6 +125,14 @@ function createAndDownloadPDF(data) {
 				theme: 'grid',
 				columnStyles: {
 					0: { cellWidth: 'auto' },
+					1: { halign: 'center' },
+					5: { halign: 'center' },
+					6: { halign: 'center' }
+				},
+				headStyles: {
+					fillColor: '#111111',
+					textColor: '#ffffff',
+					fontStyle: 'bold'
 				}
 			});
 
@@ -121,7 +141,7 @@ function createAndDownloadPDF(data) {
 
 			// Сохраняем PDF
 			doc.save("output.pdf");
-			resolve(); // Успешное завершение
+			resolve(undefined); // Успешное завершение
 		} catch (error) {
 			reject(error); // Ошибка
 		}
